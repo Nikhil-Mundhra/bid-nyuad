@@ -20,24 +20,11 @@ export function AcceptBidButton({ bidId, variant = "light" }: { bidId: string; v
   }
 
   return (
-    <div className="flex flex-col gap-2 sm:flex-row sm:items-center" style={dark ? { display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8 } : undefined}>
+    <div className={`flex flex-col gap-2 sm:flex-row sm:items-center ${dark ? "flex-wrap" : ""}`} >
       <button
         type="button"
-        className="inline-flex items-center justify-center gap-2 rounded-md bg-[#3b8a82] px-3 py-2 text-sm font-bold text-white hover:bg-[#449d94]"
-        style={{
-          display: "inline-flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 8,
-          border: 0,
-          borderRadius: 6,
-          background: "#3b8a82",
-          padding: "8px 12px",
-          color: "#fff",
-          fontSize: 14,
-          fontWeight: 700,
-          cursor: "pointer"
-        }}
+        className="inline-flex items-center justify-center gap-2 border-0 rounded-md bg-[#3b8a82] px-3 py-2 text-sm font-bold text-white cursor-pointer hover:bg-[#449d94]"
+
         onClick={acceptBid}
       >
         <Check size={16} />
