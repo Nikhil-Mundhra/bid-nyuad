@@ -3,37 +3,41 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Bell, LineChart, LogIn, UserPlus } from "lucide-react";
+import { ThemeToggle } from "./ThemeToggle";
+import { Footer } from "./Footer";
 
 export function SiteChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const immersive = pathname === "/" || pathname.startsWith("/markets");
 
   return (
-    <div className="min-h-screen">
+    <div className="flex min-h-screen flex-col">
       {!immersive ? (
-        <header className="border-b border-white/10 bg-[#111315]">
+        <header className="border-b border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
           <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
-            <Link href="/markets" className="text-xl font-semibold tracking-normal text-[#c3a6ff]">
+            <Link href="/markets" className="text-xl font-semibold tracking-normal text-violet-600 dark:text-violet-400">
               Bid-NYUAD
             </Link>
             <div className="flex items-center gap-1">
-              <Link className="rounded-md p-2 text-white/75 hover:bg-white/10" href="/markets" title="Markets">
+              <ThemeToggle />
+              <Link className="rounded-md p-2 text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800" href="/markets" title="Markets">
                 <LineChart size={20} />
               </Link>
-              <Link className="rounded-md p-2 text-white/75 hover:bg-white/10" href="/notifications" title="Notifications">
+              <Link className="rounded-md p-2 text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800" href="/notifications" title="Notifications">
                 <Bell size={20} />
               </Link>
-              <Link className="rounded-md p-2 text-white/75 hover:bg-white/10" href="/login" title="Login">
+              <Link className="rounded-md p-2 text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800" href="/login" title="Login">
                 <LogIn size={20} />
               </Link>
-              <Link className="rounded-md p-2 text-white/75 hover:bg-white/10" href="/register" title="Register">
+              <Link className="rounded-md p-2 text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800" href="/register" title="Register">
                 <UserPlus size={20} />
               </Link>
             </div>
           </nav>
         </header>
       ) : null}
-      {children}
+      <main className="flex-1">{children}</main>
+      {!immersive ? <Footer /> : null}
     </div>
   );
 }

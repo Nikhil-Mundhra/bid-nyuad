@@ -23,13 +23,13 @@ export function AcceptBidButton({ bidId, variant = "light" }: { bidId: string; v
     <div className={dark ? "flex flex-wrap items-center gap-2" : "flex flex-col gap-2 sm:flex-row sm:items-center"}>
       <button
         type="button"
-        className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-md border-0 bg-[#3b8a82] px-3 py-2 text-sm font-bold text-white hover:bg-[#449d94]"
+        className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-md border-0 bg-emerald-600 dark:bg-emerald-600 px-3 py-2 text-sm font-bold text-white hover:bg-emerald-500 dark:bg-emerald-500"
         onClick={acceptBid}
       >
         <Check size={16} />
         Accept
       </button>
-      {message ? <span className={dark ? "text-sm text-white/55" : "text-sm text-ink/65"}>{message}</span> : null}
+      {message ? <span className={dark ? "text-sm text-zinc-500 dark:text-zinc-400" : "text-sm text-ink/65"}>{message}</span> : null}
     </div>
   );
 }

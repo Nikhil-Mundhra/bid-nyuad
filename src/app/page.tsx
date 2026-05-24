@@ -9,10 +9,10 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen overflow-hidden bg-[#101113] text-white">
+    <main className="min-h-screen overflow-hidden bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50">
       <section className="mx-auto grid min-h-screen max-w-6xl gap-10 px-5 py-8 md:grid-cols-[1fr_0.9fr] md:items-center md:px-8">
         <div>
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-[#c3a6ff]">
+          <div className="inline-flex items-center gap-2 rounded-full border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-800/50 px-4 py-2 text-sm font-semibold text-violet-600 dark:text-violet-400">
             <Sparkles size={16} />
             NYUAD campus currency market
           </div>
@@ -21,39 +21,39 @@ export default function Home() {
             Trade campus value without the awkward group chat.
           </h1>
 
-          <p className="mt-6 max-w-2xl text-xl leading-8 text-white/62">
+          <p className="mt-6 max-w-2xl text-xl leading-8 text-zinc-900 dark:text-zinc-50/62">
             Bid-NYUAD helps full-aid and partial-aid students discover live rates for Falcon, Campus, Flex, Meal Swipe, and real dirham trades.
           </p>
 
           <div className="mt-10 grid gap-3 sm:flex">
             <Link
               href="/login"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#896ec9] px-6 py-4 text-lg font-black text-white"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-violet-600 dark:bg-violet-600 px-6 py-4 text-lg font-black text-white"
             >
               <LogIn size={20} />
               Login
             </Link>
             <Link
               href="/register"
-              className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/14 px-6 py-4 text-lg font-black text-white"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-zinc-200 dark:border-zinc-800 px-6 py-4 text-lg font-black text-zinc-900 dark:text-zinc-50"
             >
               <UserPlus size={20} />
               Register
             </Link>
             <Link
               href="/markets?demo=guest"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#3b8a82] px-6 py-4 text-lg font-black text-white"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 dark:bg-emerald-600 px-6 py-4 text-lg font-black text-white"
             >
               Demo guest
               <ArrowRight size={20} />
             </Link>
           </div>
 
-          <div className="mt-10 flex flex-wrap gap-3 text-sm text-white/55">
+          <div className="mt-10 flex flex-wrap gap-3 text-sm text-zinc-500 dark:text-zinc-400">
             {["NYU NetID OTP", "Anonymous trade chat", "Seller confirmation"].map((item) => (
               <span
                 key={item}
-                className="inline-flex items-center gap-2 rounded-full bg-white/5 px-4 py-2"
+                className="inline-flex items-center gap-2 rounded-full bg-zinc-100 dark:bg-zinc-800/50 px-4 py-2"
               >
                 <BadgeCheck size={16} />
                 {item}
@@ -62,24 +62,24 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="relative min-h-[560px] rounded-[36px] border border-white/10 bg-[#17191c] p-5 shadow-[0_24px_80px_rgba(0,0,0,0.35)]">
-          <div className="mx-auto mb-5 h-3 w-24 rounded-full bg-white/15" />
-          <div className="rounded-[28px] bg-[#101113] p-5">
+        <div className="relative min-h-[560px] rounded-[36px] border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800 p-5 shadow-[0_24px_80px_rgba(0,0,0,0.35)]">
+          <div className="mx-auto mb-5 h-3 w-24 rounded-full bg-zinc-300 dark:bg-zinc-700" />
+          <div className="rounded-[28px] bg-white dark:bg-zinc-950 p-5">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <div className="grid h-16 w-16 place-items-center rounded-full bg-white text-lg font-black text-[#8d6fd0]">
+                <div className="grid h-16 w-16 place-items-center rounded-full bg-white text-lg font-black text-violet-700 dark:text-violet-500">
                   FD
                 </div>
                 <div>
                   <p className="text-2xl font-black m-0">Falcon / Real</p>
-                  <p className="text-sm text-white/45 mt-1">Best active bid</p>
+                  <p className="text-sm text-zinc-900 dark:text-zinc-50/45 mt-1">Best active bid</p>
                 </div>
               </div>
               <CandlestickChart color="#c3a6ff" size={32} />
             </div>
 
-            <p className="mt-8 text-7xl font-black text-[#ef626d] leading-none">80.00</p>
-            <p className="mt-3 text-2xl font-bold text-[#ef626d]">{-0.43}% 1D</p>
+            <p className="mt-8 text-7xl font-black text-rose-600 dark:text-rose-400 leading-none">80.00</p>
+            <p className="mt-3 text-2xl font-bold text-rose-600 dark:text-rose-400">{-0.43}% 1D</p>
 
             <div className="mt-8 h-48 overflow-hidden">
               <svg viewBox="0 0 520 180" width="100%" height="100%" preserveAspectRatio="none" aria-hidden="true">
@@ -91,8 +91,8 @@ export default function Home() {
           </div>
 
           <div className="mt-4 grid grid-cols-2 gap-3">
-            <div className="rounded-2xl bg-[#896ec9] p-5 text-center text-xl font-black">BUY</div>
-            <div className="rounded-2xl bg-[#3b8a82] p-5 text-center text-xl font-black">SELL</div>
+            <div className="rounded-2xl bg-violet-600 dark:bg-violet-600 p-5 text-center text-xl font-black">BUY</div>
+            <div className="rounded-2xl bg-emerald-600 dark:bg-emerald-600 p-5 text-center text-xl font-black">SELL</div>
           </div>
         </div>
       </section>
