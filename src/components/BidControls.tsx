@@ -49,36 +49,24 @@ export function BidControls({
     <form
       id="buy"
       onSubmit={submitBid}
-      style={
-        dark
-          ? {
-              border: "1px solid rgba(255,255,255,0.08)",
-              borderRadius: 16,
-              background: "#101113",
-              padding: 16,
-              color: "#fff"
-            }
-          : undefined
-      }
       className={
         dark
-          ? "rounded-2xl border border-white/8 bg-[#101113] p-4"
+          ? "rounded-2xl border border-white/8 bg-[#101113] p-4 text-white"
           : "rounded-lg border border-ink/10 bg-white p-4 shadow-soft"
       }
     >
-      <h2 className="text-lg font-semibold tracking-normal" style={dark ? { margin: 0, fontSize: 18, fontWeight: 600, letterSpacing: 0 } : undefined}>
+      <h2 className={dark ? "m-0 text-lg font-semibold tracking-normal" : "text-lg font-semibold tracking-normal"}>
         Place a buy bid
       </h2>
       <p className={dark ? "mt-2 text-sm text-white/50" : "mt-2 text-sm text-ink/60"}>
         Your NetID session will be used automatically.
       </p>
-      <div className="mt-4 grid gap-3 sm:grid-cols-2" style={dark ? { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 12, marginTop: 16 } : undefined}>
+      <div className={dark ? "mt-4 grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] gap-3" : "mt-4 grid gap-3 sm:grid-cols-2"}>
         <label className="text-sm">
-          <span className={dark ? "font-medium text-white/60" : "font-medium text-ink/75"} style={dark ? { display: "block", marginBottom: 4, color: "rgba(255,255,255,0.6)", fontSize: 14, fontWeight: 500 } : undefined}>
+          <span className={dark ? "mb-1 block text-sm font-medium text-white/60" : "font-medium text-ink/75"}>
             {baseLabel} amount
           </span>
           <input
-            style={dark ? { width: "100%", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 6, background: "rgba(255,255,255,0.05)", padding: "8px 12px", color: "#fff" } : undefined}
             className={
               dark
                 ? "focus-ring mt-1 w-full rounded-md border border-white/10 bg-white/5 px-3 py-2 text-white"
@@ -92,11 +80,10 @@ export function BidControls({
           />
         </label>
         <label className="text-sm">
-          <span className={dark ? "font-medium text-white/60" : "font-medium text-ink/75"} style={dark ? { display: "block", marginBottom: 4, color: "rgba(255,255,255,0.6)", fontSize: 14, fontWeight: 500 } : undefined}>
+          <span className={dark ? "mb-1 block text-sm font-medium text-white/60" : "font-medium text-ink/75"}>
             {quoteLabel} offered
           </span>
           <input
-            style={dark ? { width: "100%", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 6, background: "rgba(255,255,255,0.05)", padding: "8px 12px", color: "#fff" } : undefined}
             className={
               dark
                 ? "focus-ring mt-1 w-full rounded-md border border-white/10 bg-white/5 px-3 py-2 text-white"
@@ -111,8 +98,7 @@ export function BidControls({
         </label>
       </div>
       <button
-        className="mt-4 inline-flex items-center gap-2 rounded-md bg-[#896ec9] px-4 py-2 text-sm font-bold text-white hover:bg-[#9678dc]"
-        style={dark ? { display: "inline-flex", alignItems: "center", gap: 8, marginTop: 16, border: 0, borderRadius: 6, background: "#896ec9", padding: "8px 16px", color: "#fff", fontSize: 14, fontWeight: 700, cursor: "pointer" } : undefined}
+        className={dark ? "mt-4 inline-flex cursor-pointer items-center gap-2 rounded-md border-0 bg-[#896ec9] px-4 py-2 text-sm font-bold text-white hover:bg-[#9678dc]" : "mt-4 inline-flex items-center gap-2 rounded-md bg-[#896ec9] px-4 py-2 text-sm font-bold text-white hover:bg-[#9678dc]"}
       >
         <Send size={16} />
         Place bid

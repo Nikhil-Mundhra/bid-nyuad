@@ -228,10 +228,10 @@ function MarketDesktopScreen({
   const buyHref = `/markets/${market.slug}/buy`;
 
   return (
-    <main style={{ minHeight: "100vh", background: "#0f1012", color: "#fff" }}>
-      <header style={{ borderBottom: "1px solid rgba(255,255,255,0.08)", background: "rgba(17,19,21,0.92)" }}>
-        <div style={{ maxWidth: 1360, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 32px" }}>
-          <Link href="/" style={{ color: "#c3a6ff", fontSize: 22, fontWeight: 900, textDecoration: "none" }}>
+        <main className="min-h-screen bg-[#0f1012] text-white">
+      <header className="border-b border-white/10 bg-[#111315]/92">
+        <div className="mx-auto flex max-w-[1360px] items-center justify-between px-8 py-[18px]">
+          <Link href="/" className="text-[22px] font-black text-[#c3a6ff] no-underline">
             Bid-NYUAD
           </Link>
           <MarketPairSelector
@@ -242,115 +242,115 @@ function MarketDesktopScreen({
         </div>
       </header>
 
-      <section style={{ maxWidth: 1360, margin: "0 auto", padding: "32px" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) 360px", gap: 24, alignItems: "start" }}>
-          <div style={{ display: "grid", gap: 24 }}>
-            <section style={{ border: "1px solid rgba(255,255,255,0.08)", borderRadius: 24, background: "#15171a", padding: 28 }}>
-              <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 24 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 18, minWidth: 0 }}>
-                  <div style={{ display: "grid", width: 76, height: 76, placeItems: "center", borderRadius: 999, background: "#fff", color: "#8d6fd0", fontSize: 22, fontWeight: 900 }}>
+      <section className="mx-auto max-w-[1360px] p-8">
+        <div className="grid grid-cols-[minmax(0,1fr)_360px] items-start gap-6">
+          <div className="grid gap-6">
+            <section className="rounded-[24px] border border-white/10 bg-[#15171a] p-7">
+              <div className="flex items-start justify-between gap-6">
+                <div className="flex min-w-0 items-center gap-[18px]">
+                  <div className="grid h-[76px] w-[76px] shrink-0 place-items-center rounded-full bg-white text-[22px] font-black text-[#8d6fd0]">
                     {compactCode(market.baseCurrency.code)}
                   </div>
-                  <div style={{ minWidth: 0 }}>
-                    <p style={{ margin: 0, color: "#c3a6ff", fontSize: 14, fontWeight: 800 }}>Live campus market</p>
-                    <h1 style={{ margin: "6px 0 0", fontSize: 44, lineHeight: 1.05, fontWeight: 900, letterSpacing: 0 }}>
+                  <div className="min-w-0">
+                    <p className="m-0 text-sm font-extrabold text-[#c3a6ff]">Live campus market</p>
+                    <h1 className="mt-1.5 text-[44px] font-black leading-[1.05] tracking-normal">
                       {pairName}
                     </h1>
-                    <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
-                      <span style={{ border: "1px solid rgba(255,255,255,0.14)", borderRadius: 8, padding: "4px 10px", color: "rgba(255,255,255,0.55)", fontSize: 13, fontWeight: 700 }}>
+                    <div className="mt-3 flex gap-2">
+                      <span className="rounded-lg border border-white/15 px-2.5 py-1 text-[13px] font-bold text-white/55">
                         NYUAD
                       </span>
-                      <span style={{ border: "1px solid rgba(255,255,255,0.14)", borderRadius: 8, padding: "4px 10px", color: "rgba(255,255,255,0.55)", fontSize: 13, fontWeight: 700 }}>
+                      <span className="rounded-lg border border-white/15 px-2.5 py-1 text-[13px] font-bold text-white/55">
                         Campus FX
                       </span>
                     </div>
                   </div>
                 </div>
 
-                <div style={{ textAlign: "right" }}>
-                  <div style={{ display: "inline-flex", border: "1px solid rgba(255,255,255,0.14)", borderRadius: 999, background: "#101113", padding: 4 }}>
-                    <span style={{ borderRadius: 999, background: "#261f3b", padding: "8px 22px", color: "#c3a6ff", fontSize: 15, fontWeight: 900 }}>BID</span>
-                    <span style={{ padding: "8px 22px", color: "rgba(255,255,255,0.42)", fontSize: 15, fontWeight: 800 }}>ASK</span>
+                <div className="text-right">
+                  <div className="inline-flex rounded-full border border-white/15 bg-[#101113] p-1">
+                    <span className="rounded-full bg-[#261f3b] px-[22px] py-2 text-[15px] font-black text-[#c3a6ff]">BID</span>
+                    <span className="px-[22px] py-2 text-[15px] font-extrabold text-white/40">ASK</span>
                   </div>
-                  <p style={{ margin: "22px 0 0", color: headlineMove.positive ? "#52b57f" : "#ef626d", fontSize: 72, lineHeight: 1, fontWeight: 900 }}>
+                  <p className={`mt-5 text-[72px] font-black leading-none ${headlineMove.positive ? "text-[#52b57f]" : "text-[#ef626d]"}`}>
                     {headlinePrice}
                   </p>
-                  <p style={{ margin: "8px 0 0", color: headlineMove.positive ? "#52b57f" : "#ef626d", fontSize: 22, fontWeight: 800 }}>
-                    {headlineMove.amount} ({headlineMove.percent}) <span style={{ marginLeft: 10, color: "rgba(255,255,255,0.38)" }}>1D</span>
+                  <p className={`mt-2 text-[22px] font-extrabold ${headlineMove.positive ? "text-[#52b57f]" : "text-[#ef626d]"}`}>
+                    {headlineMove.amount} ({headlineMove.percent}) <span className="ml-2.5 text-white/40">1D</span>
                   </p>
                 </div>
               </div>
             </section>
 
-            <section style={{ border: "1px solid rgba(255,255,255,0.08)", borderRadius: 24, background: "#15171a", padding: 24 }}>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
-                <div style={{ display: "flex", gap: 28 }}>
+            <section className="rounded-[24px] border border-white/10 bg-[#15171a] p-6">
+              <div className="mb-2 flex items-center justify-between">
+                <div className="flex gap-7">
                   {tabs.map((tab, index) => (
-                    <span key={tab} style={{ color: index === 0 ? "#c3a6ff" : "rgba(255,255,255,0.55)", fontSize: 18, fontWeight: 900 }}>
+                    <span key={tab} className={`text-lg font-black ${index === 0 ? "text-[#c3a6ff]" : "text-white/55"}`}>
                       {tab}
                     </span>
                   ))}
                 </div>
-                <Link href={buyHref} style={{ display: "inline-flex", alignItems: "center", gap: 8, borderRadius: 999, background: "#211a33", padding: "12px 18px", color: "#c3a6ff", fontSize: 15, fontWeight: 900, textDecoration: "none" }}>
-                  <Link2 size={18} />
+                <Link href={buyHref} className="inline-flex items-center gap-2 rounded-full bg-[#211a33] px-[18px] py-3 text-[15px] font-black text-[#c3a6ff] no-underline">
+                  <BellPlus size={18} />
                   Place buy bid
                 </Link>
               </div>
-              <div style={{ height: 360 }}>
+              <div className="h-[360px]">
                 <TrendChart points={visiblePoints} />
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(6, minmax(0, 1fr))", gap: 10, marginTop: 12 }}>
+              <div className="mt-3 grid grid-cols-6 gap-2.5">
                 {periodMetrics.map((period) => (
                   <button
                     key={period.label}
+                    className={`cursor-pointer rounded-[14px] border-0 px-2.5 py-3.5 text-center ${selectedPeriod === period.label ? "bg-white/10" : "bg-white/5"}`}
                     onClick={() => setSelectedPeriod(period.label)}
-                    style={{
-                      border: 0,
-                      borderRadius: 14,
-                      background: selectedPeriod === period.label ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.03)",
-                      padding: "14px 10px",
-                      textAlign: "center",
-                      cursor: "pointer"
-                    }}
+                    title={`${period.label} performance`}
                   >
-                    <p style={{ margin: 0, color: "rgba(255,255,255,0.62)", fontSize: 14, fontWeight: 800 }}>{period.label}</p>
-                    <p style={{ margin: "4px 0 0", color: period.positive ? "#52b57f" : "#ef626d", fontSize: 18, fontWeight: 900 }}>{period.value}</p>
+                    <p className="m-0 text-sm font-extrabold text-white/60">
+                      {period.label}
+                    </p>
+                    <p className={`mt-1 text-lg font-black ${period.positive ? "text-[#52b57f]" : "text-[#ef626d]"}`}>
+                      {period.value}
+                    </p>
                   </button>
                 ))}
               </div>
             </section>
           </div>
 
-          <aside style={{ display: "grid", gap: 18 }}>
-            <section style={{ border: "1px solid rgba(255,255,255,0.08)", borderRadius: 24, background: "#15171a", padding: 20 }}>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-                <Link href={buyHref} style={{ borderRadius: 10, background: "#896ec9", padding: "18px 16px", color: "#fff", textAlign: "center", fontSize: 20, fontWeight: 900, textDecoration: "none" }}>
+          <div className="grid gap-[18px]">
+            <section className="rounded-[24px] border border-white/10 bg-[#15171a] p-5">
+              <div className="grid grid-cols-2 gap-2.5">
+                <Link href={buyHref} className="rounded-lg bg-[#896ec9] px-4 py-[18px] text-center text-xl font-black text-white no-underline">
                   BUY
                 </Link>
-                <a href="#sell" style={{ borderRadius: 10, background: "#3b8a82", padding: "18px 16px", color: "#fff", textAlign: "center", fontSize: 20, fontWeight: 900, textDecoration: "none" }}>
+                <a href="#sell" className="rounded-lg bg-[#3b8a82] px-4 py-[18px] text-center text-xl font-black text-white no-underline">
                   SELL
                 </a>
               </div>
             </section>
 
-            <section style={{ border: "1px solid rgba(255,255,255,0.08)", borderRadius: 24, background: "#15171a", padding: 20 }}>
-              <h2 style={{ margin: 0, fontSize: 22, fontWeight: 900 }}>Highest active bids</h2>
-              <div style={{ display: "grid", gap: 12, marginTop: 16 }}>
+            <section className="rounded-[24px] border border-white/10 bg-[#15171a] p-5">
+              <h2 className="m-0 text-[22px] font-black">Highest active bids</h2>
+              <div className="mt-4 grid gap-3">
                 {activeBids.map((bid) => (
-                  <article key={bid.id} style={{ border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, background: "#101113", padding: 16 }}>
-                    <p style={{ margin: 0, fontSize: 17, lineHeight: 1.35, fontWeight: 900 }}>
-                      {Number(bid.quoteAmount).toFixed(2)} {market.quoteCurrency.displayName}s
+                  <article key={bid.id} className="rounded-2xl border border-white/10 bg-[#101113] p-4">
+                    <p className="m-0 text-[17px] font-black leading-[1.35]">
+                      {Number(bid.quoteAmount).toFixed(2)} {market.quoteCurrency.displayName}s for{" "}
+                      {Number(bid.baseAmount).toFixed(2)} {market.baseCurrency.displayName}s
                     </p>
-                    <p style={{ margin: "4px 0 0", color: "rgba(255,255,255,0.55)", fontSize: 14 }}>
-                      for {Number(bid.baseAmount).toFixed(2)} {market.baseCurrency.displayName}s
+                    <p className="mt-1 text-sm text-white/55">
+                      Rate {Number(bid.rate).toFixed(3)}
                     </p>
-                    <p style={{ margin: "8px 0 12px", color: "rgba(255,255,255,0.42)", fontSize: 13 }}>Rate {Number(bid.rate).toFixed(3)}</p>
-                    <AcceptBidButton bidId={bid.id} variant="dark" />
+                    <div className="mt-3">
+                      <AcceptBidButton bidId={bid.id} variant="dark" />
+                    </div>
                   </article>
                 ))}
               </div>
             </section>
-          </aside>
+          </div>
         </div>
       </section>
     </main>
@@ -383,17 +383,11 @@ export function MarketMobileScreen({
     <main className="min-h-screen bg-[#101113] text-white" style={{ minHeight: "100vh", background: "#101113", color: "#fff" }}>
       <section
         className="mx-auto min-h-screen max-w-[1120px] bg-[#111315] pb-8 md:pb-12"
-        style={{
-          minHeight: "100vh",
-          maxWidth: 1120,
-          margin: "0 auto",
-          background: "#111315",
-          paddingBottom: "2rem"
-        }}
+
       >
         <div
           className="flex items-center justify-between px-5 py-8 sm:px-8"
-          style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "2rem" }}
+
         >
           <Link
             href="/markets"
@@ -425,18 +419,7 @@ export function MarketMobileScreen({
             <div className="flex min-w-0 items-center gap-5" style={{ display: "flex", minWidth: 0, alignItems: "center", gap: 20 }}>
               <div
                 className="grid h-24 w-24 shrink-0 place-items-center rounded-full bg-white text-2xl font-black text-[#8d6fd0] shadow-[0_0_0_1px_rgba(255,255,255,0.08)]"
-                style={{
-                  display: "grid",
-                  width: 96,
-                  height: 96,
-                  flexShrink: 0,
-                  placeItems: "center",
-                  borderRadius: 999,
-                  background: "#fff",
-                  color: "#8d6fd0",
-                  fontSize: 24,
-                  fontWeight: 900
-                }}
+
               >
                 {compactCode(market.baseCurrency.code)}
               </div>
@@ -489,19 +472,7 @@ export function MarketMobileScreen({
             <Link
               href={`/markets/${market.slug}`}
               className="mb-3 hidden items-center gap-3 rounded-full bg-[#211a33] px-8 py-5 text-2xl font-bold text-[#c3a6ff] md:inline-flex"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 12,
-                marginBottom: 12,
-                borderRadius: 999,
-                background: "#211a33",
-                padding: "20px 32px",
-                color: "#c3a6ff",
-                fontSize: 24,
-                fontWeight: 700,
-                textDecoration: "none"
-              }}
+
             >
               <Link2 size={28} />
               Market Chain
