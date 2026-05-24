@@ -17,6 +17,7 @@
   "dependencies": {
     "@google-cloud/vision": "^5.3.6",
     "@prisma/client": "^5.22.0",
+    "@vercel/analytics": "^2.0.1",
     "bcryptjs": "^2.4.3",
     "lucide-react": "^0.468.0",
     "next": "^14.2.16",
