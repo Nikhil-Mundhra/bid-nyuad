@@ -25,11 +25,16 @@ services:
       db:
         condition: service_healthy
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@db:5432/bid_nyuad?schema=public
+      DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:postgres@db:5432/bid_nyuad?schema=public}
       NEXT_PUBLIC_APP_URL: http://localhost:3000
       SESSION_SECRET: change-me-in-production
       SEED_DEMO_DATA: "1"
       MOCK_OCR_NET_ID: demo123
+      NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL:-}
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:-}
+      SUPABASE_URL: ${SUPABASE_URL:-}
+      SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY:-}
+      SUPABASE_ID_UPLOAD_BUCKET: ${SUPABASE_ID_UPLOAD_BUCKET:-nyuad-id-uploads}
     ports:
       - "3000:3000"
 

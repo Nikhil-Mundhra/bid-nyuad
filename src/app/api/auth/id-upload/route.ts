@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { extractNetId } from "@/lib/server/ocrService";
+import { uploadIdCardToSupabase } from "@/lib/server/supabaseStorage";
 
 export const dynamic = "force-dynamic";
 
@@ -7,6 +8,7 @@ export async function POST(request: Request) {
   try {
     const contentType = request.headers.get("content-type") ?? "";
     let imageOrText: File | string = "";
+    let uploadedIdRef: string | undefined;
 
     if (contentType.includes("multipart/form-data")) {
       const formData = await request.formData();
@@ -16,6 +18,8 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: "Upload an ID card image as idCard." }, { status: 400 });
       }
 
+      const upload = await uploadIdCardToSupabase(file);
+      uploadedIdRef = upload?.ref;
       imageOrText = file;
     } else {
       const body = await request.json();
@@ -27,7 +31,8 @@ export async function POST(request: Request) {
     return NextResponse.json({
       netId: extraction.netId,
       confidence: extraction.confidence,
-      rawText: extraction.rawText
+      rawText: extraction.rawText,
+      uploadedIdRef
     });
   } catch (error) {
     return NextResponse.json(

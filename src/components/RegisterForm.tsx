@@ -5,24 +5,37 @@ import { useState } from "react";
 
 export function RegisterForm() {
   const [rawText, setRawText] = useState("NYUAD ID sample: netID abc123");
+  const [idCardFile, setIdCardFile] = useState<File | null>(null);
   const [netId, setNetId] = useState("");
   const [attemptId, setAttemptId] = useState("");
+  const [uploadedIdRef, setUploadedIdRef] = useState("");
   const [otp, setOtp] = useState("");
   const [whatsappNumber, setWhatsappNumber] = useState("");
   const [message, setMessage] = useState("");
 
   async function extract() {
     setMessage("Reading ID...");
-    const response = await fetch("/api/auth/id-upload", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ rawText })
-    });
+    const request =
+      idCardFile
+        ? (() => {
+            const formData = new FormData();
+            formData.append("idCard", idCardFile);
+            return { method: "POST", body: formData };
+          })()
+        : {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ rawText })
+          };
+    const response = await fetch("/api/auth/id-upload", request);
     const result = await response.json();
 
     if (response.ok) {
       setNetId(result.netId);
-      setMessage(`Extracted NetID ${result.netId}.`);
+      setUploadedIdRef(result.uploadedIdRef ?? "");
+      setMessage(
+        `Extracted NetID ${result.netId}${result.uploadedIdRef ? " and stored the ID upload in Supabase." : "."}`
+      );
     } else {
       setMessage(result.error);
     }
@@ -33,7 +46,7 @@ export function RegisterForm() {
     const response = await fetch("/api/auth/send-otp", {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ netId })
+      body: JSON.stringify({ netId, uploadedIdRef: uploadedIdRef || undefined })
     });
     const result = await response.json();
 
@@ -74,6 +87,18 @@ export function RegisterForm() {
         <p className="mt-2 text-sm text-ink/70">
           Upload/OCR, NetID email verification, then WhatsApp collection.
         </p>
+        <label className="mt-4 block text-sm">
+          <span className="font-medium text-ink/75">NYUAD ID image</span>
+          <input
+            className="focus-ring mt-1 w-full rounded-md border border-ink/15 px-3 py-2"
+            type="file"
+            accept="image/*"
+            onChange={(event) => setIdCardFile(event.target.files?.[0] ?? null)}
+          />
+          <span className="mt-1 block text-xs text-ink/50">
+            Stored in Supabase Storage when server credentials are configured.
+          </span>
+        </label>
         <label className="mt-4 block text-sm">
           <span className="font-medium text-ink/75">OCR source text for local scaffold</span>
           <textarea
