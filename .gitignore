@@ -5,5 +5,6 @@ coverage
 .env
 .env.local
 .env.*.local
+bid-nyuad-*.json
 *.log
 prisma/dev.db

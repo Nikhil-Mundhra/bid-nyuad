@@ -77,8 +77,11 @@ npm run dev
 Configure `DATABASE_URL` in `.env` before pushing or seeding the database.
 For local ID-image testing without a real OCR provider, add
 `MOCK_OCR_NET_ID=demo123` to `.env`; alternatively, the registration scaffold
-can extract a NetID from entered OCR source text. With no SMTP settings, OTP
-codes are logged to the terminal running the server.
+can extract a NetID from entered OCR source text. For actual image OCR, enable
+Google Cloud Vision and configure either `GOOGLE_APPLICATION_CREDENTIALS` with
+the path to a service-account key file or `GOOGLE_CREDENTIALS_JSON` with its
+JSON content in hosted deployments. With no email delivery settings, OTP codes
+are logged to the terminal running the server.
 
 The markets UI can render seeded front-end preview data without
 `DATABASE_URL`, but authenticated bidding, verification, chat, and
@@ -92,6 +95,8 @@ notifications require a configured database.
 | `NEXT_PUBLIC_APP_URL` | Browser-visible app origin, usually `http://localhost:3000`. |
 | `SESSION_SECRET` | Reserved deployment secret; set a strong production value. |
 | `MOCK_OCR_NET_ID` | Optional local fallback NetID returned for uploaded image files. |
+| `GOOGLE_APPLICATION_CREDENTIALS` | Local/server filesystem path to the Google Cloud Vision service-account JSON file. |
+| `GOOGLE_CREDENTIALS_JSON` | Inline Google Cloud Vision service-account JSON for deployments without a credential file. |
 | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM` | Optional SMTP delivery for OTP email; without these, the OTP logs to the server console. |
 | `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` | Server-only Supabase credentials for private ID-card uploads. |
 | `SUPABASE_ID_UPLOAD_BUCKET` | Storage bucket for ID images; defaults to `nyuad-id-uploads`. |

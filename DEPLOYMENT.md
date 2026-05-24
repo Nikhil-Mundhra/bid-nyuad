@@ -36,6 +36,7 @@ Use Supabase as the production Postgres host:
    - `SUPABASE_URL`
    - `SUPABASE_SERVICE_ROLE_KEY`
    - `SUPABASE_ID_UPLOAD_BUCKET=nyuad-id-uploads`
+   - `GOOGLE_CREDENTIALS_JSON` containing a Google Cloud Vision service-account JSON key
 
 `SUPABASE_SERVICE_ROLE_KEY` is server-only. Never expose it with a `NEXT_PUBLIC_` prefix.
 
@@ -46,6 +47,12 @@ For production, change these in `docker-compose.yml` or your host environment:
 - `SESSION_SECRET`
 - SMTP variables for real OTP email delivery
 - Supabase variables for hosted DB and ID-card storage
+- `GOOGLE_CREDENTIALS_JSON` for Google Cloud Vision OCR of uploaded ID cards
+
+Google Cloud Vision uses service-account credentials on the server. For a
+filesystem-based deployment, set `GOOGLE_APPLICATION_CREDENTIALS` to the
+absolute path of the downloaded service-account JSON file instead. The service
+account email or OAuth client ID alone cannot authorize Vision API requests.
 
 To start without reseeding demo data:
 

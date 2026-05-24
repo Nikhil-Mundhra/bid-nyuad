@@ -15,6 +15,7 @@
     "db:seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@google-cloud/vision": "^5.3.6",
     "@prisma/client": "^5.22.0",
     "bcryptjs": "^2.4.3",
     "lucide-react": "^0.468.0",

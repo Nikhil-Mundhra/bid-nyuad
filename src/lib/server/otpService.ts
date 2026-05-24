@@ -2,19 +2,26 @@ import bcrypt from "bcryptjs";
 import nodemailer from "nodemailer";
 import { buildNyuEmail } from "@/lib/domain/otp";
 
-type EmailDeliveryConfig = {
-  provider: "mailjet" | "smtp";
-  from: string;
-  transport: {
-    host: string;
-    port: number;
-    secure: boolean;
-    auth?: {
-      user: string;
-      pass: string;
+type EmailDeliveryConfig =
+  | {
+      provider: "mailjet";
+      from: string;
+      apiKey: string;
+      secretKey: string;
+    }
+  | {
+      provider: "smtp";
+      from: string;
+      transport: {
+        host: string;
+        port: number;
+        secure: boolean;
+        auth?: {
+          user: string;
+          pass: string;
+        };
+      };
     };
-  };
-};
 
 export function generateOtp() {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -40,35 +47,27 @@ function parsePort(rawPort: string | undefined, fallback: number) {
 
 export function getEmailDeliveryConfig(): EmailDeliveryConfig | null {
   const hasMailjetConfig = [
-    process.env.MAILJET_SMTP_SERVER,
     process.env.MAILJET_API_KEY,
     process.env.MAILJET_SECRET_KEY,
     process.env.MAILJET_SENDER_ADDRESS
   ].some(Boolean);
 
   if (hasMailjetConfig) {
-    const host = process.env.MAILJET_SMTP_SERVER;
-    const user = process.env.MAILJET_API_KEY;
-    const pass = process.env.MAILJET_SECRET_KEY;
+    const apiKey = process.env.MAILJET_API_KEY;
+    const secretKey = process.env.MAILJET_SECRET_KEY;
     const from = process.env.MAILJET_SENDER_ADDRESS;
 
-    if (!host || !user || !pass || !from) {
+    if (!apiKey || !secretKey || !from) {
       throw new Error(
-        "Mailjet email delivery requires MAILJET_SMTP_SERVER, MAILJET_API_KEY, MAILJET_SECRET_KEY, and MAILJET_SENDER_ADDRESS."
+        "Mailjet email delivery requires MAILJET_API_KEY, MAILJET_SECRET_KEY, and MAILJET_SENDER_ADDRESS."
       );
     }
-
-    const port = parsePort(process.env.MAILJET_SMTP_PORT || process.env.MAILJET_SMTP_PORT2, 587);
 
     return {
       provider: "mailjet",
       from,
-      transport: {
-        host,
-        port,
-        secure: port === 465,
-        auth: { user, pass }
-      }
+      apiKey,
+      secretKey
     };
   }
 
@@ -96,6 +95,34 @@ export function getEmailDeliveryConfig(): EmailDeliveryConfig | null {
   };
 }
 
+async function sendWithMailjet(config: Extract<EmailDeliveryConfig, { provider: "mailjet" }>, to: string, code: string) {
+  const response = await fetch("https://api.mailjet.com/v3.1/send", {
+    method: "POST",
+    headers: {
+      Authorization: `Basic ${Buffer.from(`${config.apiKey}:${config.secretKey}`).toString("base64")}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      Messages: [
+        {
+          From: {
+            Email: config.from,
+            Name: "Bid-NYUAD"
+          },
+          To: [{ Email: to }],
+          Subject: "Your Bid-NYUAD verification code",
+          TextPart: `Your Bid-NYUAD verification code is ${code}. It expires in 10 minutes.`
+        }
+      ]
+    })
+  });
+
+  if (!response.ok) {
+    const details = await response.text().catch(() => "");
+    throw new Error(`Mailjet OTP email failed (${response.status}). ${details}`.trim());
+  }
+}
+
 export async function sendNetIdOtp(netId: string, code: string) {
   const to = buildNyuEmail(netId);
   const deliveryConfig = getEmailDeliveryConfig();
@@ -103,6 +130,12 @@ export async function sendNetIdOtp(netId: string, code: string) {
   if (!deliveryConfig) {
     console.info(`[Bid-NYUAD dev OTP] ${to}: ${code}`);
     return { to, delivered: false, provider: "console" };
+  }
+
+  if (deliveryConfig.provider === "mailjet") {
+    await sendWithMailjet(deliveryConfig, to, code);
+
+    return { to, delivered: true, provider: deliveryConfig.provider };
   }
 
   const transporter = nodemailer.createTransport(deliveryConfig.transport);
