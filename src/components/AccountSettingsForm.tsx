@@ -25,57 +25,31 @@ export function AccountSettingsForm({ initialWhatsapp }: { initialWhatsapp?: str
   return (
     <form
       onSubmit={saveWhatsapp}
-      style={{
-        border: "1px solid rgba(255,255,255,0.08)",
-        borderRadius: 20,
-        background: "#15171a",
-        padding: 20
-      }}
+      className="rounded-[20px] border border-white/10 bg-[#15171a] p-5"
     >
-      <h2 style={{ display: "flex", alignItems: "center", gap: 10, margin: 0, fontSize: 22, fontWeight: 900 }}>
+      <h2 className="m-0 flex items-center gap-2.5 text-[22px] font-black">
         <Phone size={22} />
         Trading contact
       </h2>
-      <p style={{ margin: "8px 0 0", color: "rgba(255,255,255,0.55)", fontSize: 14 }}>
+      <p className="mt-2 text-sm text-white/55">
         Buyers can reveal this only after an accepted trade.
       </p>
-      <label style={{ display: "block", marginTop: 18, color: "rgba(255,255,255,0.65)", fontSize: 14, fontWeight: 700 }}>
+      <label className="mt-[18px] block text-sm font-bold text-white/65">
         WhatsApp number
         <input
           value={whatsappNumber}
           onChange={(event) => setWhatsappNumber(event.target.value)}
           placeholder="+971..."
-          style={{
-            display: "block",
-            width: "100%",
-            marginTop: 6,
-            border: "1px solid rgba(255,255,255,0.12)",
-            borderRadius: 10,
-            background: "rgba(255,255,255,0.05)",
-            padding: "12px 14px",
-            color: "#fff"
-          }}
+          className="mt-1.5 block w-full rounded-lg border border-white/10 bg-white/5 p-3 text-white"
         />
       </label>
       <button
-        style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: 8,
-          marginTop: 16,
-          border: 0,
-          borderRadius: 10,
-          background: "#896ec9",
-          padding: "12px 16px",
-          color: "#fff",
-          fontWeight: 900,
-          cursor: "pointer"
-        }}
+        className="mt-4 inline-flex cursor-pointer items-center gap-2 rounded-lg bg-[#896ec9] px-4 py-3 font-black text-white"
       >
         <Save size={18} />
         Save settings
       </button>
-      {message ? <p style={{ margin: "12px 0 0", color: "rgba(255,255,255,0.65)", fontSize: 14 }}>{message}</p> : null}
+      {message ? <p className="mt-3 text-sm text-white/65">{message}</p> : null}
     </form>
   );
 }

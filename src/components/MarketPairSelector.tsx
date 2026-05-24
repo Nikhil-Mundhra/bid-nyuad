@@ -61,50 +61,26 @@ export function MarketPairSelector({
     }
   }
 
-  const selectStyle = {
-    minWidth: isMobile ? 88 : 170,
-    maxWidth: isMobile ? 96 : 220,
-    border: "1px solid rgba(255,255,255,0.12)",
-    borderRadius: 10,
-    background: "#15171a",
-    color: "#fff",
-    padding: isMobile ? "9px 22px 9px 8px" : "10px 34px 10px 12px",
-    fontSize: isMobile ? 12 : 14,
-    fontWeight: 800,
-    outline: "none"
-  };
+  const selectClassName = `border border-white/10 rounded-lg bg-[#15171a] text-white font-extrabold outline-none ${
+    isMobile ? "min-w-[88px] max-w-[96px] py-2 pl-2 pr-[22px] text-xs" : "min-w-[170px] max-w-[220px] py-2.5 pl-3 pr-[34px] text-sm"
+  }`;
 
   return (
     <form
       onSubmit={onApply}
-      style={{
-        display: "flex",
-        flexWrap: "wrap",
-        alignItems: "center",
-        justifyContent: isMobile ? "flex-end" : "flex-start",
-        gap: isMobile ? 6 : 10,
-        maxWidth: "100%"
-      }}
+      className={`flex max-w-full flex-wrap items-center ${isMobile ? "gap-1.5 justify-end" : "gap-2.5 justify-start"}`}
     >
       <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: isMobile ? 5 : 8,
-          maxWidth: "100%",
-          border: "1px solid rgba(255,255,255,0.08)",
-          borderRadius: 14,
-          background: isMobile ? "rgba(0,0,0,0.55)" : "#101113",
-          padding: isMobile ? 6 : 8,
-          backdropFilter: "blur(10px)"
-        }}
+        className={`flex max-w-full items-center rounded-xl border border-white/10 backdrop-blur-md ${
+          isMobile ? "gap-1.5 bg-black/55 p-1.5" : "gap-2 bg-[#101113] p-2"
+        }`}
       >
         <select
           aria-label="Base currency"
           name="baseCurrencyCode"
           value={baseCode}
           onChange={(event) => setBaseCode(event.target.value)}
-          style={selectStyle}
+          className={selectClassName}
         >
           {currencies.map((currency) => (
             <option key={currency.code} value={currency.code}>
@@ -112,13 +88,13 @@ export function MarketPairSelector({
             </option>
           ))}
         </select>
-        <span style={{ color: "rgba(255,255,255,0.5)", fontSize: isMobile ? 16 : 18, fontWeight: 900 }}>/</span>
+        <span className={`font-black text-white/50 ${isMobile ? "text-base" : "text-lg"}`}>/</span>
         <select
           aria-label="Quote currency"
           name="quoteCurrencyCode"
           value={quoteCode}
           onChange={(event) => setQuoteCode(event.target.value)}
-          style={selectStyle}
+          className={selectClassName}
         >
           {currencies.map((currency) => (
             <option key={currency.code} value={currency.code}>
@@ -129,44 +105,25 @@ export function MarketPairSelector({
         <button
           type="submit"
           disabled={isApplying}
-          style={{
-            border: 0,
-            borderRadius: 10,
-            background: isApplying ? "rgba(195,166,255,0.35)" : "#896ec9",
-            color: "#fff",
-            cursor: isApplying ? "wait" : "pointer",
-            fontSize: isMobile ? 12 : 14,
-            fontWeight: 900,
-            padding: isMobile ? "10px 12px" : "11px 18px"
-          }}
+          className={`rounded-lg font-black text-white ${
+            isApplying ? "cursor-wait bg-[#c3a6ff]/35" : "cursor-pointer bg-[#896ec9]"
+          } ${isMobile ? "px-3 py-2.5 text-xs" : "px-[18px] py-[11px] text-sm"}`}
         >
           {isApplying ? "Applying" : "Apply"}
         </button>
         <Link
           href="/account"
           title="Account"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: isMobile ? 0 : 8,
-            border: "1px solid rgba(255,255,255,0.1)",
-            borderRadius: 10,
-            background: "#281f3d",
-            color: "#c3a6ff",
-            minWidth: isMobile ? 40 : 100,
-            padding: isMobile ? "10px 11px" : "10px 14px",
-            fontSize: 14,
-            fontWeight: 900,
-            textDecoration: "none"
-          }}
+          className={`inline-flex items-center justify-center rounded-lg border border-white/10 bg-[#281f3d] font-black text-[#c3a6ff] no-underline ${
+            isMobile ? "min-w-[40px] px-[11px] py-2.5 text-sm gap-0" : "min-w-[100px] gap-2 px-[14px] py-2.5 text-sm"
+          }`}
         >
           <UserRound size={isMobile ? 17 : 18} />
           {isMobile ? null : "Account"}
         </Link>
       </div>
       {message ? (
-        <p style={{ flexBasis: "100%", margin: 0, color: "#ef626d", fontSize: 12, fontWeight: 800, textAlign: isMobile ? "right" : "left" }}>
+        <p className={`basis-full m-0 font-extrabold text-[#ef626d] text-xs ${isMobile ? "text-right" : "text-left"}`}>
           {message}
         </p>
       ) : null}
