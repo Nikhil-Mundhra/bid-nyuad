@@ -1,6 +1,6 @@
 "use client";
 
-import { BadgeCheck, Mail, Phone, ScanText } from "lucide-react";
+import { BadgeCheck, Loader2, Mail, Phone, ScanText } from "lucide-react";
 import { useState } from "react";
 
 export function RegisterForm() {
@@ -11,73 +11,111 @@ export function RegisterForm() {
   const [uploadedIdRef, setUploadedIdRef] = useState("");
   const [otp, setOtp] = useState("");
   const [whatsappNumber, setWhatsappNumber] = useState("");
+  const [privateEmail, setPrivateEmail] = useState("");
   const [message, setMessage] = useState("");
 
-  async function extract() {
-    setMessage("Reading ID...");
-    const request =
-      idCardFile
-        ? (() => {
-            const formData = new FormData();
-            formData.append("idCard", idCardFile);
-            return { method: "POST", body: formData };
-          })()
-        : {
-            method: "POST",
-            headers: { "content-type": "application/json" },
-            body: JSON.stringify({ rawText })
-          };
-    const response = await fetch("/api/auth/id-upload", request);
-    const result = await response.json();
+  const [isExtracting, setIsExtracting] = useState(false);
+  const [isSendingOtp, setIsSendingOtp] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [isSavingProfile, setIsSavingProfile] = useState(false);
 
-    if (response.ok) {
-      setNetId(result.netId);
-      setUploadedIdRef(result.uploadedIdRef ?? "");
-      setMessage(
-        `Extracted NetID ${result.netId}${result.uploadedIdRef ? " and stored the ID upload in Supabase." : "."}`
-      );
-    } else {
-      setMessage(result.error);
+  async function extract() {
+    setIsExtracting(true);
+    setMessage("Reading ID...");
+    try {
+      const request =
+        idCardFile
+          ? (() => {
+              const formData = new FormData();
+              formData.append("idCard", idCardFile);
+              return { method: "POST", body: formData };
+            })()
+          : {
+              method: "POST",
+              headers: { "content-type": "application/json" },
+              body: JSON.stringify({ rawText })
+            };
+      const response = await fetch("/api/auth/id-upload", request);
+      const result = await response.json();
+
+      if (response.ok) {
+        setNetId(result.netId);
+        setUploadedIdRef(result.uploadedIdRef ?? "");
+        setMessage(
+          `Extracted NetID ${result.netId}${result.uploadedIdRef ? " and stored the ID upload in Supabase." : "."}`
+        );
+      } else {
+        setMessage(result.error);
+      }
+    } catch (err) {
+      setMessage("Failed to extract ID.");
+    } finally {
+      setIsExtracting(false);
     }
   }
 
   async function sendOtp() {
+    setIsSendingOtp(true);
     setMessage("Sending OTP...");
-    const response = await fetch("/api/auth/send-otp", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ netId, uploadedIdRef: uploadedIdRef || undefined })
-    });
-    const result = await response.json();
+    try {
+      const response = await fetch("/api/auth/send-otp", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ netId, uploadedIdRef: uploadedIdRef || undefined })
+      });
+      const result = await response.json();
 
-    if (response.ok) {
-      setAttemptId(result.attemptId);
-      setMessage(`OTP sent to ${result.to}${result.delivered ? "." : " in console dev mode."}`);
-    } else {
-      setMessage(result.error);
+      if (response.ok) {
+        setAttemptId(result.attemptId);
+        setMessage("OTP has been sent successfully to your email.");
+      } else {
+        setMessage(result.error);
+      }
+    } catch (err) {
+      setMessage("Failed to send OTP.");
+    } finally {
+      setIsSendingOtp(false);
     }
   }
 
   async function verifyOtp() {
+    setIsVerifying(true);
     setMessage("Verifying OTP...");
-    const response = await fetch("/api/auth/verify-otp", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ attemptId, netId, otp })
-    });
-    const result = await response.json();
-    setMessage(response.ok ? `Verified ${result.user.email}. Add WhatsApp next.` : result.error);
+    try {
+      const response = await fetch("/api/auth/verify-otp", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ attemptId, netId, otp })
+      });
+      const result = await response.json();
+      if (response.ok) {
+        setMessage(`Verified ${result.user.email}. Add WhatsApp next.`);
+      } else {
+        setMessage(result.error);
+        setOtp("");
+      }
+    } catch (err) {
+      setMessage("Failed to verify OTP.");
+      setOtp("");
+    } finally {
+      setIsVerifying(false);
+    }
   }
 
-  async function saveWhatsapp() {
-    setMessage("Saving WhatsApp...");
-    const response = await fetch("/api/auth/whatsapp", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ whatsappNumber })
-    });
-    const result = await response.json();
-    setMessage(response.ok ? `WhatsApp saved for ${result.user.netId}.` : result.error);
+  async function saveProfile() {
+    setIsSavingProfile(true);
+    setMessage("Saving profile...");
+    try {
+      const response = await fetch("/api/auth/profile", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ whatsappNumber, privateEmail })
+      });
+      const result = await response.json();
+      setMessage(response.ok ? `Profile saved for ${result.user.netId}.` : result.error);
+    } finally {
+      setIsSavingProfile(false);
+    }
   }
 
   return (
@@ -108,11 +146,12 @@ export function RegisterForm() {
           />
         </label>
         <button
-          className="mt-3 inline-flex items-center gap-2 rounded-md bg-gulf px-4 py-2 text-sm font-medium text-white hover:bg-gulf/90"
+          className="mt-3 inline-flex items-center gap-2 rounded-md bg-gulf px-4 py-2 text-sm font-medium text-white hover:bg-gulf/90 disabled:opacity-50"
           onClick={extract}
+          disabled={isExtracting}
         >
-          <ScanText size={16} />
-          Extract NetID
+          {isExtracting ? <Loader2 className="animate-spin" size={16} /> : <ScanText size={16} />}
+          {isExtracting ? "Extracting..." : "Extract NetID"}
         </button>
       </section>
 
@@ -120,19 +159,17 @@ export function RegisterForm() {
         <div className="grid gap-3">
           <label className="text-sm">
             <span className="font-medium text-ink/75">NetID</span>
-            <input
-              className="focus-ring mt-1 w-full rounded-md border border-ink/15 px-3 py-2"
-              value={netId}
-              onChange={(event) => setNetId(event.target.value)}
-            />
+            <p className="focus-ring mt-1 w-full rounded-md border border-ink/15 px-3 py-2 bg-zinc-50 dark:bg-zinc-900 text-ink/75 h-10 flex items-center">
+              {netId || "No NetID extracted"}
+            </p>
           </label>
           <button
-            className="inline-flex items-center justify-center gap-2 rounded-md bg-ink px-4 py-2 text-sm font-medium text-white hover:bg-ink/90"
+            className="inline-flex items-center justify-center gap-2 rounded-md bg-ink px-4 py-2 text-sm font-medium text-white hover:bg-ink/90 disabled:opacity-50"
             onClick={sendOtp}
-            disabled={!netId}
+            disabled={!netId || isSendingOtp}
           >
-            <Mail size={16} />
-            Send OTP
+            {isSendingOtp ? <Loader2 className="animate-spin" size={16} /> : <Mail size={16} />}
+            {isSendingOtp ? "Sending..." : "Send OTP"}
           </button>
           <label className="text-sm">
             <span className="font-medium text-ink/75">OTP</span>
@@ -144,15 +181,15 @@ export function RegisterForm() {
             />
           </label>
           <button
-            className="inline-flex items-center justify-center gap-2 rounded-md bg-falcon px-4 py-2 text-sm font-medium text-white hover:bg-falcon/90"
+            className="inline-flex items-center justify-center gap-2 rounded-md bg-falcon px-4 py-2 text-sm font-medium text-white hover:bg-falcon/90 disabled:opacity-50"
             onClick={verifyOtp}
-            disabled={!attemptId || otp.length !== 6}
+            disabled={!attemptId || otp.length !== 6 || isVerifying}
           >
-            <BadgeCheck size={16} />
-            Verify
+            {isVerifying ? <Loader2 className="animate-spin" size={16} /> : <BadgeCheck size={16} />}
+            {isVerifying ? "Verifying..." : "Verify"}
           </button>
           <label className="text-sm">
-            <span className="font-medium text-ink/75">WhatsApp number</span>
+            <span className="font-medium text-ink/75">WhatsApp number (optional)</span>
             <input
               className="focus-ring mt-1 w-full rounded-md border border-ink/15 px-3 py-2"
               value={whatsappNumber}
@@ -160,13 +197,23 @@ export function RegisterForm() {
               placeholder="+971..."
             />
           </label>
+          <label className="text-sm">
+            <span className="font-medium text-ink/75">Private email (optional)</span>
+            <input
+              className="focus-ring mt-1 w-full rounded-md border border-ink/15 px-3 py-2"
+              value={privateEmail}
+              onChange={(event) => setPrivateEmail(event.target.value)}
+              placeholder="user@example.com"
+              type="email"
+            />
+          </label>
           <button
-            className="inline-flex items-center justify-center gap-2 rounded-md bg-palm px-4 py-2 text-sm font-medium text-white hover:bg-palm/90"
-            onClick={saveWhatsapp}
-            disabled={!whatsappNumber}
+            className="inline-flex items-center justify-center gap-2 rounded-md bg-palm px-4 py-2 text-sm font-medium text-white hover:bg-palm/90 disabled:opacity-50"
+            onClick={saveProfile}
+            disabled={isSavingProfile}
           >
-            <Phone size={16} />
-            Save WhatsApp
+            {isSavingProfile ? <Loader2 className="animate-spin" size={16} /> : <Phone size={16} />}
+            {isSavingProfile ? "Saving..." : "Complete Registration"}
           </button>
           {message ? <p className="rounded-md bg-paper px-3 py-2 text-sm text-ink/75">{message}</p> : null}
         </div>
