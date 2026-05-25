@@ -6,7 +6,8 @@ import { getCurrentUser } from "@/lib/server/auth";
 export const dynamic = "force-dynamic";
 
 const schema = z.object({
-  whatsappNumber: z.string().min(7).max(24)
+  whatsappNumber: z.string().min(7).max(24).optional().or(z.literal("")),
+  privateEmail: z.string().email().optional().or(z.literal(""))
 });
 
 export async function POST(request: Request) {
@@ -25,14 +26,18 @@ export async function POST(request: Request) {
 
   const user = await prisma.user.update({
     where: { id: userId },
-    data: { whatsappNumber: parsed.data.whatsappNumber }
+    data: {
+      whatsappNumber: parsed.data.whatsappNumber || null,
+      privateEmail: parsed.data.privateEmail || null
+    }
   });
 
   return NextResponse.json({
     user: {
       id: user.id,
       netId: user.netId,
-      whatsappNumber: user.whatsappNumber
+      whatsappNumber: user.whatsappNumber,
+      privateEmail: user.privateEmail
     }
   });
 }
