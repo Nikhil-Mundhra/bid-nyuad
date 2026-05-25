@@ -6,7 +6,8 @@ export type OcrExtraction = {
   rawText: string;
 };
 
-const NET_ID_PATTERN = /\b[a-z]{2,4}\d{1,6}\b/i;
+const NET_ID_PATTERN_EXPLICIT = /(?:Net\s*ID\s*:?\s*)([a-zA-Z0-9]+)/i;
+const NET_ID_PATTERN_FALLBACK = /\b[a-z]{2,4}\d{1,6}\b/i;
 
 type GoogleCredentials = {
   client_email?: string;
@@ -55,11 +56,13 @@ function averagePageConfidence(pages: Array<{ confidence?: number | null }> | nu
 
 export async function extractNetId(image: File | Blob | string): Promise<OcrExtraction> {
   if (typeof image === "string") {
-    const match = image.match(NET_ID_PATTERN);
+    const explicitMatch = image.match(NET_ID_PATTERN_EXPLICIT);
+    const fallbackMatch = !explicitMatch ? image.match(NET_ID_PATTERN_FALLBACK) : null;
+    const match = explicitMatch || fallbackMatch;
 
     if (match) {
       return {
-        netId: match[0].toLowerCase(),
+        netId: (match[1] || match[0]).toLowerCase(),
         confidence: 0.9,
         rawText: image
       };
@@ -90,14 +93,16 @@ export async function extractNetId(image: File | Blob | string): Promise<OcrExtr
 
   const [response] = await client.documentTextDetection(Buffer.from(await image.arrayBuffer()));
   const rawText = response.fullTextAnnotation?.text ?? response.textAnnotations?.[0]?.description ?? "";
-  const match = rawText.match(NET_ID_PATTERN);
+  const explicitMatch = rawText.match(NET_ID_PATTERN_EXPLICIT);
+  const fallbackMatch = !explicitMatch ? rawText.match(NET_ID_PATTERN_FALLBACK) : null;
+  const match = explicitMatch || fallbackMatch;
 
   if (!match) {
     throw new Error("OCR completed, but no NetID was found in the uploaded image.");
   }
 
   return {
-    netId: match[0].toLowerCase(),
+    netId: (match[1] || match[0]).toLowerCase(),
     confidence: averagePageConfidence(response.fullTextAnnotation?.pages),
     rawText
   };

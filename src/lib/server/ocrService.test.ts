@@ -29,6 +29,12 @@ describe("ocr service adapter", () => {
     });
   });
 
+  it("extracts a NetID from strings structured with 'Net ID: '", async () => {
+    await expect(extractNetId("Univ ID: N12345678 Net ID: xy1234")).resolves.toMatchObject({
+      netId: "xy1234"
+    });
+  });
+
   it("extracts a NetID from an uploaded image using inline Google Vision credentials", async () => {
     vi.stubEnv("MOCK_OCR_NET_ID", "");
     vi.stubEnv(
