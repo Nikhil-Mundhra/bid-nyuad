@@ -61,7 +61,7 @@ export function MarketPairSelector({
     }
   }
 
-  const selectClassName = `border border-white/10 rounded-lg bg-[#15171a] text-white font-extrabold outline-none ${
+  const selectClassName = `border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 font-extrabold outline-none ${
     isMobile ? "min-w-[88px] max-w-[96px] py-2 pl-2 pr-[22px] text-xs" : "min-w-[170px] max-w-[220px] py-2.5 pl-3 pr-[34px] text-sm"
   }`;
 
@@ -71,8 +71,8 @@ export function MarketPairSelector({
       className={`flex max-w-full flex-wrap items-center ${isMobile ? "gap-1.5 justify-end" : "gap-2.5 justify-start"}`}
     >
       <div
-        className={`flex max-w-full items-center rounded-xl border border-white/10 backdrop-blur-md ${
-          isMobile ? "gap-1.5 bg-black/55 p-1.5" : "gap-2 bg-[#101113] p-2"
+        className={`flex max-w-full items-center rounded-xl border border-zinc-200 dark:border-zinc-800 backdrop-blur-md ${
+          isMobile ? "gap-1.5 bg-zinc-200 dark:bg-zinc-800 p-1.5" : "gap-2 bg-white dark:bg-zinc-950 p-2"
         }`}
       >
         <select
@@ -88,7 +88,7 @@ export function MarketPairSelector({
             </option>
           ))}
         </select>
-        <span className={`font-black text-white/50 ${isMobile ? "text-base" : "text-lg"}`}>/</span>
+        <span className={`font-black text-zinc-900 dark:text-zinc-50/50 ${isMobile ? "text-base" : "text-lg"}`}>/</span>
         <select
           aria-label="Quote currency"
           name="quoteCurrencyCode"
@@ -105,8 +105,8 @@ export function MarketPairSelector({
         <button
           type="submit"
           disabled={isApplying}
-          className={`rounded-lg font-black text-white ${
-            isApplying ? "cursor-wait bg-[#c3a6ff]/35" : "cursor-pointer bg-[#896ec9]"
+          className={`rounded-lg font-black text-zinc-900 dark:text-zinc-50 ${
+            isApplying ? "cursor-wait bg-violet-300 dark:bg-violet-700/50" : "cursor-pointer bg-violet-600 dark:bg-violet-600"
           } ${isMobile ? "px-3 py-2.5 text-xs" : "px-[18px] py-[11px] text-sm"}`}
         >
           {isApplying ? "Applying" : "Apply"}
@@ -114,7 +114,7 @@ export function MarketPairSelector({
         <Link
           href="/account"
           title="Account"
-          className={`inline-flex items-center justify-center rounded-lg border border-white/10 bg-[#281f3d] font-black text-[#c3a6ff] no-underline ${
+          className={`inline-flex items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-800 bg-violet-200 dark:bg-violet-900/50 font-black text-violet-600 dark:text-violet-400 no-underline ${
             isMobile ? "min-w-[40px] px-[11px] py-2.5 text-sm gap-0" : "min-w-[100px] gap-2 px-[14px] py-2.5 text-sm"
           }`}
         >
@@ -123,7 +123,7 @@ export function MarketPairSelector({
         </Link>
       </div>
       {message ? (
-        <p className={`basis-full m-0 font-extrabold text-[#ef626d] text-xs ${isMobile ? "text-right" : "text-left"}`}>
+        <p className={`basis-full m-0 font-extrabold text-rose-600 dark:text-rose-400 text-xs ${isMobile ? "text-right" : "text-left"}`}>
           {message}
         </p>
       ) : null}

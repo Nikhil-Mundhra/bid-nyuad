@@ -28,31 +28,31 @@ export default async function BuyBidPage({ params }: { params: { marketId: strin
   const hasSession = hasSessionCookie();
 
   return (
-    <main className="min-h-screen bg-[#101113] text-white">
+    <main className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50">
       <section className="mx-auto max-w-3xl px-5 py-8 sm:px-8">
         <Link
           href={`/markets/${market.slug}`}
-          className="inline-flex items-center gap-2 rounded-full p-2 text-white/70 hover:bg-white/10 no-underline"
+          className="inline-flex items-center gap-2 rounded-full p-2 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:bg-zinc-800 no-underline"
         >
           <ArrowLeft size={24} />
           Market
         </Link>
 
         <div className="mt-10">
-          <p className="m-0 text-sm font-semibold text-[#c3a6ff]">
+          <p className="m-0 text-sm font-semibold text-violet-600 dark:text-violet-400">
             Buy bid
           </p>
           <h1 className="mt-3 text-[clamp(2.5rem,8vw,4.5rem)] font-black leading-[1.08] tracking-normal">
             {market.baseCurrency.displayName} / {market.quoteCurrency.displayName}
           </h1>
-          <p className="mt-4 text-lg text-white/55">
+          <p className="mt-4 text-lg text-zinc-500 dark:text-zinc-400">
             Place a buy bid using your verified NetID session. Sellers will see it if it becomes the best active bid.
           </p>
         </div>
 
         {!hasSession ? (
           <div
-            className="mt-8 rounded-2xl border border-[#c3a6ff]/25 bg-[#211a33] p-4 text-sm text-[#dccfff]"
+            className="mt-8 rounded-2xl border border-violet-200 dark:border-violet-800/50 bg-violet-100 dark:bg-violet-900/30 p-4 text-sm text-violet-700 dark:text-violet-300"
           >
             Demo guest mode can preview this form. Login or register to submit a live bid.
           </div>
