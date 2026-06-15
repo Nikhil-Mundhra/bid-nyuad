@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 
 export async function POST(request: Request, { params }: { params: { id: string } }) {
   const currentUser = await getCurrentUser();
-  const sellerId = currentUser?.id ?? request.headers.get("x-user-id");
+  const sellerId = currentUser?.id;
 
   if (!sellerId) {
     return NextResponse.json({ error: "Login or register before accepting a bid." }, { status: 401 });

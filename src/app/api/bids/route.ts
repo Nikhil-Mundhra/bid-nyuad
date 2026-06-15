@@ -18,7 +18,7 @@ const schema = z.object({
 
 export async function POST(request: Request) {
   const currentUser = await getCurrentUser();
-  const buyerId = currentUser?.id ?? request.headers.get("x-user-id");
+  const buyerId = currentUser?.id;
 
   if (!buyerId) {
     return NextResponse.json({ error: "Login or register before placing a live bid." }, { status: 401 });

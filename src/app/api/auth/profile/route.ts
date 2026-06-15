@@ -18,7 +18,7 @@ export async function POST(request: Request) {
   }
 
   const currentUser = await getCurrentUser();
-  const userId = currentUser?.id ?? request.headers.get("x-user-id");
+  const userId = currentUser?.id;
 
   if (!userId) {
     return NextResponse.json({ error: "Login before updating account settings." }, { status: 401 });
