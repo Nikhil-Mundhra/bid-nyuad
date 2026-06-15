@@ -1,6 +1,7 @@
 import { MarketPickerScreen } from "@/components/MarketMobileScreen";
 import { devMarkets } from "@/lib/dev-data";
 import { getMarketSummaries } from "@/lib/server/marketService";
+import { serialize } from "@/lib/serialize";
 
 async function loadMarkets() {
   if (!process.env.DATABASE_URL) {
@@ -9,14 +10,14 @@ async function loadMarkets() {
 
   try {
     const markets = await getMarketSummaries();
-    return JSON.parse(JSON.stringify(markets));
+    return serialize(markets);
   } catch {
     return devMarkets;
   }
 }
 
 export default async function MarketsPage() {
-  const markets = await loadMarkets();
+  const markets: any = await loadMarkets();
 
   return <MarketPickerScreen markets={markets} />;
 }
