@@ -2,6 +2,7 @@ import { MarketMobileScreen } from "@/components/MarketMobileScreen";
 import { devMarkets } from "@/lib/dev-data";
 import { makeEmptyMarketFromSlug } from "@/lib/domain/currencies";
 import { getMarketDetail } from "@/lib/server/marketService";
+import { serialize } from "@/lib/serialize";
 
 async function loadMarket(marketId: string) {
   if (!process.env.DATABASE_URL) {
@@ -11,7 +12,7 @@ async function loadMarket(marketId: string) {
   try {
     const market = await getMarketDetail(marketId);
     if (market) {
-      return JSON.parse(JSON.stringify(market));
+      return serialize(market);
     }
   } catch {
     // Fall through to seeded UI data.
@@ -21,11 +22,11 @@ async function loadMarket(marketId: string) {
 }
 
 export default async function MarketDetailPage({ params }: { params: { marketId: string } }) {
-  const market = await loadMarket(params.marketId);
+  const market: any = await loadMarket(params.marketId);
   const activeBids = market.bids
     .filter((bid: { status: string }) => bid.status === "ACTIVE")
     .slice()
-    .sort((left: { rate: number }, right: { rate: number }) => Number(right.rate) - Number(left.rate));
+    .sort((left: { rate: any }, right: { rate: any }) => Number(right.rate) - Number(left.rate));
 
   return <MarketMobileScreen market={market} activeBids={activeBids} />;
 }
