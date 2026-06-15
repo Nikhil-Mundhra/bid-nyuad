@@ -73,4 +73,12 @@ describe("OTP email delivery configuration", () => {
 
     expect(() => getEmailDeliveryConfig()).toThrow("Mailjet email delivery requires");
   });
+
+  it("throws an error if SMTP_PORT is not a valid integer", () => {
+    clearMailjetConfig();
+    vi.stubEnv("SMTP_HOST", "smtp.example.com");
+    vi.stubEnv("SMTP_PORT", "invalid");
+
+    expect(() => getEmailDeliveryConfig()).toThrow("Email SMTP port must be a positive integer.");
+  });
 });
