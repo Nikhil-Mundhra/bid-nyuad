@@ -29,16 +29,18 @@ export async function POST(request: Request) {
     return NextResponse.json({ market: { id: slug, slug } });
   }
 
-  for (const currency of currencies) {
-    await prisma.currency.upsert({
-      where: { code: currency.code },
-      update: {
-        displayName: currency.displayName,
-        hierarchyRank: currency.hierarchyRank
-      },
-      create: currency
-    });
-  }
+  await Promise.all(
+    currencies.map((currency) =>
+      prisma.currency.upsert({
+        where: { code: currency.code },
+        update: {
+          displayName: currency.displayName,
+          hierarchyRank: currency.hierarchyRank
+        },
+        create: currency
+      })
+    )
+  );
 
   const [baseCurrency, quoteCurrency] = await Promise.all([
     prisma.currency.findUniqueOrThrow({ where: { code: validation.baseCurrencyCode } }),
